@@ -39,6 +39,10 @@ if( ${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC )
     set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D_WIN32_WINNT=0x0601 /W4 /wd4068 /wd4702 /wd4996 /wd4265" )
 endif ( )
 
+if ( CMAKE_SYSTEM_NAME MATCHES "QNX" )
+    set(QNX TRUE)
+endif ( )
+
 if( NOT WIN32 )
     set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Weffc++ -pedantic -Wno-unknown-pragmas -Wno-deprecated-declarations -Wno-non-virtual-dtor" )
 endif ( )
@@ -51,16 +55,14 @@ if ( APPLE )
     set( CMAKE_MACOSX_RPATH ON )
 endif ( )
 
-set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake" )
-
-find_package( asio REQUIRED )
+find_package( asio CONFIG REQUIRED )
 
 if ( BUILD_SSL )
     add_definitions( "-DBUILD_SSL" )
     find_package( openssl REQUIRED )
 endif ( )
 
-include_directories( ${INCLUDE_DIR} SYSTEM ${asio_INCLUDE} ${ssl_INCLUDE} )
+include_directories( ${INCLUDE_DIR} SYSTEM ${asio_INCLUDE_DIR} ${ssl_INCLUDE_DIR} )
 
 if ( BUILD_IPC )
     add_definitions( "-DBUILD_IPC" )
@@ -103,7 +105,7 @@ else ( )
 endif ( )
 
 if ( BUILD_TESTS )
-    find_package( catch REQUIRED )
+    find_package( Catch2 REQUIRED )
 
     enable_testing( )
     add_subdirectory( "${PROJECT_SOURCE_DIR}/test/unit" )

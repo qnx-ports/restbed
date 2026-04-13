@@ -8,7 +8,7 @@ cmake_minimum_required( VERSION 3.1.0 FATAL_ERROR )
 set( SOURCE_DIR "source" )
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCATCH_CONFIG_MAIN" )
 
-include_directories( SYSTEM ${catch_INCLUDE} )
+include_directories( SYSTEM ${Catch2_INCLUDE_DIR}/catch2 )
 
 #
 # Build
